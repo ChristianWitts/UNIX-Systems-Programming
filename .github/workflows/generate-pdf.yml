@@ -8,11 +8,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          echo "Lorem ipsum" > lorem_1.md  # create two example files
-          echo "dolor sit amet" > lorem_2.md
-          mkdir output  # create output dir
-          # this will also include README.md
-          echo "::set-env name=FILELIST::$(printf '"%s" ' *.md)"
+          mkdir output
+          echo "::set-env name=FILELIST::$(printf '"%s" ' src/*.md)"
       - uses: docker://pandoc/latex:2.9
         with:
           args: >-
@@ -24,7 +21,7 @@ jobs:
             -V documentclass=report
             -V papersize=A4
             -V geometry:margin=1in
-            --output=output/book.pdf ${{ env.FILELIST }}
+            --output=output/systems_programming_in_zig.pdf ${{ env.FILELIST }}
       - uses: actions/upload-artifact@master
         with:
           name: output
